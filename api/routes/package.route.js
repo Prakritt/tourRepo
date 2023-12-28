@@ -1,9 +1,10 @@
 import express from 'express';
-import { createPackage,getAllPackages } from '../controllers/package.controller.js';
+import { createPackage,getAllPackages, getPackage } from '../controllers/package.controller.js';
 
 const router = express.Router();
 
 router.get('/',getAllPackages);
+router.get('/:packageId',getPackage)
 router.post('/',createPackage);
 
 export default router;

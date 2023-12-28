@@ -1,5 +1,6 @@
 import Package from "../model/Package.model.js";
 import errorHandler from "../utils/errorHandler.js";
+import mongoose from 'mongoose';
 
 export const createPackage = async (req,res,next)=>{
 
@@ -29,6 +30,33 @@ export const createPackage = async (req,res,next)=>{
 
 }
 
+export const getPackage = async(req,res,next)=>{
+    try{
+
+        const packageId = req.params.packageId;
+        var ObjectId = mongoose.Types.ObjectId;
+        if (!ObjectId.isValid(packageId)){
+            return next(errorHandler(400,'Invalid package id..'))
+        }
+
+        const result = await Package.findById(packageId);
+        if(!result){
+            return next(errorHandler(400,'Invalid Package id..'))
+        }
+
+
+        res.status(200).json({
+            status : "success",
+            message : "Getting the Package..",
+            data : result
+        })
+
+
+    }catch(err){
+        next(err);
+    }
+}
+
 export const getAllPackages = async(req,res)=>{
     try{
 
@@ -36,6 +64,7 @@ export const getAllPackages = async(req,res)=>{
         res.status(200).json({
             status : "success",
             length : result.length,
+            message : "Getting the package..",
             data : result,
         })
 
